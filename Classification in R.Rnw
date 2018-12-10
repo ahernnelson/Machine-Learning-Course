@@ -1,0 +1,81 @@
+%%%%%%%%%%%%%%%%%%%%%
+%% start of header %%
+  %%%%%%%%%%%%%%%%%%%%%
+\documentclass[a4paper]{article}
+
+\usepackage{graphics,latexsym,geometry,amsmath,bibunits,makeidx,fancyhdr}
+\usepackage[authoryear,round]{natbib}
+\usepackage{graphicx}
+\usepackage{enumerate}
+\usepackage{hyperref}
+\usepackage{color} 
+
+\pagestyle{fancy}
+
+%% you should change the following: title, date, author
+\title{Supervised Learing: Classification} 
+\author{Ahern Nelson}
+
+%%%%%%%%%%%%%%%%%%%%
+  %%% end of header %%
+%%%%%%%%%%%%%%%%%%%%
+  
+  
+  %%%%%%%%%%%%%%%%%%%%%%
+  %%% start document %%%
+  %%%%%%%%%%%%%%%%%%%%%%
+  \begin{document}
+
+%This prints the header/title:
+\maketitle
+
+\section{Introduction}
+We now wish to futher our study of supervised lerning by honing in on classification tasks. A classification task is one that models a relationship between a categorical target variable and feature variables. The goal of classification is to build a model capable of predicting the target label, given feature variable values, with high accuracy.\\
+
+In this paper we will examine classification using Nearest Neighbors methods. Namely, we will lend significant time to the k-Nearest-Neighbors algorithm.
+
+\section{The k-Nearest-Neighbors Algorithm}
+Nearest-Neighbor methods use observations in the data closest to the feature variables to form neighborhoods about said points and thus estimate the target labels for new data based on these neighborhoods.\\
+
+The k-nearest neighbor takes the k closest observations about some fixed observation and forms an appropriate neighborhood about the observation. We define this by:\\
+
+$$\frac{1}{k}\sum_{x_i \in N_{k}(x)}^{} y_i$$\\
+
+Where $y_i$ is an observation, $x_i$ are is the feature vector, and $N_{k}(x)$ is the the neighborhood of $x$, the feature vector associated with $y_i$, defined by the k closest points $x_i$ to $x$.\\
+
+It is assumed here that the metric, $d(x,x_i)$, is defined by the usual euclidean metric. Note that this may introduce problems, or unnatural assumptions, when dealing with data containing categorical feature variables. \\
+
+\section{Apply nearest-neighbors in R}
+Here we explore the kNN algorithm in action. We consider a dataset containing data extracted from traffic sign images containing traffic sign labels and feature variables of the the RGB values. We wish to use the kNN algorithm to predict future labels of traffic signs.\\
+
+\noindent
+We start by reading the data into R:
+<<>>=
+# Read in data
+signs <- read.table("signs.txt", header = T)
+next_sign <- read.table("next_sign.txt", header=T)
+head(signs)
+next_sign
+@
+
+We now use to KNN algorithm to predict the traffic sign type for the next_sign observation
+<<>>=
+# KNN lib
+library(class)
+sign_types <- signs$sign_type
+
+# Classify the next sign observed
+knn(train = signs[-1], test = next_sign, cl = sign_types, k=1)
+@
+Thus, we estimate that the next_sign data corresponds to a stop sign under the 1-nearest-neighbor.\\
+
+
+
+%% end the entire document - this should always be the last line!
+  \end{document}
+
+%%%%%%%%%%%%%%%%%%%%%%
+  %%%% end document %%%%
+  %%%%%%%%%%%%%%%%%%%%%%
+  
+  

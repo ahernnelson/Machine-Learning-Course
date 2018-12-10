@@ -1,0 +1,16 @@
+\documentclass{article}
+
+\begin{document}
+
+\section{Bagged Trees}
+We have discussed the problems present in decision trees one of those being the high
+variance pressent in them. For example a small chang in data can result a drastically 
+different decision boundaries making model inerpretation somewhat precarious. In this 
+section we introduce bagged trees avaerages many trees to reduce variance. This processof 
+combining several models inot one is wha tis known as an ensemble model. Bagging not only 
+recues varaiance, but also helps overfitting the data. Bagging is short for bootsrap 
+aggregation. It uses bootstrapping which is the process sammpling rows from the dataset 
+with replacment and then wee aggreates this via avagerages.
+
+
+\end{document}
