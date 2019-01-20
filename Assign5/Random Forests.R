@@ -1,3 +1,4 @@
+source("Classification.R")
 library(pacman)
 p_load("randomForest", "Metrics", "ipred", "rpart", "rpart.plot", "caret")
 ####### model ################
@@ -93,3 +94,6 @@ for (i in 1:nrow(hyper_grid)) {
 # Identify optimal set of hyperparmeters based on OOB error
 opt_i <- which.min(oob_err)
 print(hyper_grid[opt_i,])
+
+#### IMPORTANT for Boosting.R #####
+rf_preds <- pred[,"yes"]

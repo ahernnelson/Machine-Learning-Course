@@ -1,3 +1,4 @@
+source("Random Forests.R")
 ####### Model ###############
 p_load("Metrics", "ipred", "rpart", "rpart.plot", "caret")
 library(ipred)
@@ -75,3 +76,6 @@ auc(actual = ifelse(credit_test$default == "yes", 1, 0),
 
 # Compare to caret 5-fold cross-validated AUC
 credit_caret_model$results[, "ROC"]
+
+#### Important for Boosting.R #####
+bag_preds <- pred[,"yes"]

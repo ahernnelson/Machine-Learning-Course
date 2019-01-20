@@ -1,5 +1,6 @@
+source("Bagged Trees.R")
 library(pacman)
-p_load("gbm", "Metrics", "ipred", "rpart", "rpart.plot", "caret")
+p_load("gbm", "Metrics", "ipred", "rpart", "rpart.plot", "caret", "ROCR")
 # Convert "yes" to 1, "no" to 0
 credit_train$default <- ifelse(credit_train$default == "yes", 1, 0)
 
@@ -70,34 +71,34 @@ preds2 <- predict(object = credit_model,
 # Generate the test set AUCs using the two sets of preditions & compare
 auc1 <- auc(actual = credit_test$default, predicted = preds1)  #OOB
 auc2 <- auc(actual = credit_test$default, predicted = preds2)  #CV 
-
+gbm_preds <- preds2
 # Compare AUC 
 print(paste0("Test set AUC (OOB): ", auc1))                         
 print(paste0("Test set AUC (CV): ", auc2))
 
-# # Generate the test set AUCs using the two sets of predictions & compare
-# actual <- credit_test$default
-# dt_auc <- auc(actual = actual, predicted = dt_preds)
-# bag_auc <- auc(actual = actual, predicted = bag_preds)
-# rf_auc <- auc(actual = actual, predicted = rf_preds)
-# gbm_auc <- auc(actual = actual, predicted = gbm_preds)
-# 
-# # Print results
-# sprintf("Decision Tree Test AUC: %.3f", dt_auc)
-# sprintf("Bagged Trees Test AUC: %.3f", bag_auc)
-# sprintf("Random Forest Test AUC: %.3f", rf_auc)
-# sprintf("GBM Test AUC: %.3f", gbm_auc)
-# List of predictions
-# preds_list <- list(dt_preds, bag_preds, rf_preds, gbm_preds)
-# 
-# # List of actual values (same for all)
-# m <- length(preds_list)
-# actuals_list <- rep(list(credit_test$default), m)
-# 
-# # Plot the ROC curves
-# pred <- prediction(preds_list, actuals_list)
-# rocs <- performance(pred, "tpr", "fpr")
-# plot(rocs, col = as.list(1:m), main = "Test Set ROC Curves")
-# legend(x = "bottomright", 
-#        legend = c("Decision Tree", "Bagged Trees", "Random Forest", "GBM"),
-#        fill = 1:m)
+# Here we look at the performance of all previous tree based methods
+actual <- credit_test$default
+dt_auc <- auc(actual = actual, predicted = dt_preds)
+bag_auc <- auc(actual = actual, predicted = bag_preds)
+rf_auc <- auc(actual = actual, predicted = rf_preds)
+gbm_auc <- auc(actual = actual, predicted = gbm_preds)
+
+# Print results
+sprintf("Decision Tree Test AUC: %.3f", dt_auc)
+sprintf("Bagged Trees Test AUC: %.3f", bag_auc)
+sprintf("Random Forest Test AUC: %.3f", rf_auc)
+sprintf("GBM Test AUC: %.3f", gbm_auc)
+#List of predictions
+preds_list <- list(dt_preds, bag_preds, rf_preds, gbm_preds)
+
+# List of actual values (same for all)
+m <- length(preds_list)
+actuals_list <- rep(list(credit_test$default), m)
+
+# Plot the ROC curves
+pred <- prediction(preds_list, actuals_list)
+rocs <- performance(pred, "tpr", "fpr")
+plot(rocs, col = as.list(1:m), main = "Test Set ROC Curves")
+legend(x = "bottomright",
+       legend = c("Decision Tree", "Bagged Trees", "Random Forest", "GBM"),
+       fill = 1:m)
